@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.0.0" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+    <UserSecretsId>917b201c-b509-46bf-84f0-fd6c3c1bfad0</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ApiGateways\Ocelot.ApiGateway\Ocelot.ApiGateway.csproj" />
+    <ProjectReference Include="..\Services\Account\Account.API\Account.API.csproj" />
+    <ProjectReference Include="..\Services\Transaction\Transaction.API\Transaction.API.csproj" />
+    <ProjectReference Include="..\Services\UserManagement\UserManagement.API\UserManagement.API.csproj" />
+  </ItemGroup>
+
+</Project>
