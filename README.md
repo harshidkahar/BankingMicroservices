@@ -55,17 +55,19 @@ This project implements a Point of Sale (POS) system using .NET 9.0 with Clean A
 ## Endpoints
 
 ### User Management Service
-- `POST /users`: Create a new user.
-- `GET /users/{id}`: Retrieve user details.
+- `POST /users/register`: Create a new user.
+- `GET /users?Id=`: Retrieve user details.
+- `POST /auth/login`: Get Token and Refreshtoken.
+- `POST /users/refreshToken`: Get Refreshtoken.
 
 ### Account Management Service
-- `POST /accounts`: Add a new account.
-- `PATCH /accounts/{id}/balance`: Update account balance.
-- `GET /accounts/{id}`: Retrieve account details.
+- `POST /accounts/CreateAccount`: Add a new account.
+- `PATCH /accounts/UpdateBalance`: Update account balance.
+- `GET /accounts/GetAccount`: Retrieve account details.
 
 ### Transaction Management Service
-- `POST /transactions`: Perform fund transfers.
-- `GET /transactions/{id}`: Retrieve transaction details.
+- `POST /transactions/TransferFunds`: Perform fund transfers.
+- `GET /transactions/getTransactionsByAccountId?AccountId`: Retrieve transaction details.
 
 ## Deployment
 
@@ -81,7 +83,7 @@ This project implements a Point of Sale (POS) system using .NET 9.0 with Clean A
 
 ## Conclusion
 
-This POS system architecture provides a robust and scalable solution for banking operations. By adhering to Clean Architecture principles and utilizing modern technologies, the system ensures high performance and maintainability.
+This POS system architecture provides a robust and scalable solution for banking operations. The system ensures high performance and maintainability by adhering to Clean Architecture principles and utilizing modern technologies.
 
 ---
 
