@@ -1,6 +1,30 @@
-@Account.API_HostAddress = http://localhost:5041
+@Account.API_HostAddress = https://localhost:5002
 
 GET {{Account.API_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+POST {{Account.API_HostAddress}}/api/accounts/CreateAccount
+Content-Type: application/json
+
+{
+  "userId": "f4eb0c1f-3a88-47ae-ae11-f437bd82b827",
+  "initialBalance":50000,
+  "accountType": "Savings"
+}
+
+###
+
+GET {{Account.API_HostAddress}}/api/accounts/GetAccount?accountId=48ad9eb3-597b-4ca4-8a3c-44b71951245f
+###
+
+PATCH {{Account.API_HostAddress}}/api/accounts/UpdateBalance
+Content-Type: application/json
+
+{
+  "accountId": "48ad9eb3-597b-4ca4-8a3c-44b71951245f",
+  "amount": 500
+}
 
 ###

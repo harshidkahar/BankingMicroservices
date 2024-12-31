@@ -1,6 +1,32 @@
-@UserManagement.API_HostAddress = http://localhost:5041
+@UserManagement.API_HostAddress = https://localhost:5001
 
 GET {{UserManagement.API_HostAddress}}/weatherforecast/
 Accept: application/json
+
+###
+
+POST {{UserManagement.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "harshidkahar9@gmail.com",
+  "password": "Harshid"
+}
+
+###
+
+POST {{UserManagement.API_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "firstName": "Harshid",
+  "lastName": "Kahar",
+  "email": "harshidkahar9@gmail.com",
+  "password": "Harshid"
+}
+
+###
+
+GET {{UserManagement.API_HostAddress}}/api/auth/user?Id=C2DE54E8-87FF-40F2-8B32-13EAF611716E
 
 ###

@@ -29,7 +29,7 @@ namespace Account.API.Controllers
         }
 
         [HttpGet("GetAccount")]
-        public async Task<IActionResult> GetAccount(GetAccountQuery query)
+        public async Task<IActionResult> GetAccount([FromQuery] GetAccountQuery query)
         {
             var result = await _mediator.Send(query);
             return result.Match(

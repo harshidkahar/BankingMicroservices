@@ -1,6 +1,16 @@
-@Transaction.API_HostAddress = http://localhost:5041
+@Transaction.API_HostAddress = https://localhost:5003
 
-GET {{Transaction.API_HostAddress}}/weatherforecast/
-Accept: application/json
+
+GET {{Transaction.API_HostAddress}}/api/transactions/getTransactionsByAccountId?accountId=48ad9eb3-597b-4ca4-8a3c-44b71951245f
+###
+
+POST {{Transaction.API_HostAddress}}/api/transactions/TransferFunds
+Content-Type: application/json
+
+{
+  "fromAccountId": "48ad9eb3-597b-4ca4-8a3c-44b71951245f",
+  "toAccountId": "96BE15E5-EBB2-400D-878A-FEF46B8121F2",
+  "amount": 250
+}
 
 ###
