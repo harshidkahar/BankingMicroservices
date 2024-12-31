@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Utility\Utility.csproj" />
     <ProjectReference Include="..\Transaction.Domain\Transaction.Domain.csproj" />
   </ItemGroup>
 

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utility.UnitOfWork;
+using Utility.Messaging;
 
 namespace UserManagement.Infrastructure;
 
@@ -24,6 +25,10 @@ public static class DependencyInjection
         //services.AddScoped<IUnitOfWork, UserManagement.Infrastructure.UnitOfWork.UnitOfWork>();
         services.AddScoped<IUnitOfWork>(provider => new UnitOfWork(configuration.GetConnectionString("DefaultConnection")));
 
+
+        // Azure Service Bus
+        services.AddSingleton<IEventPublisher, AzureServiceBusPublisher>();
+        services.AddSingleton<IEventSubscriber, AzureServiceBusSubscriber>();
 
         // Authentication Service
         services.AddScoped<IAuthenticationService, AuthenticationService>();

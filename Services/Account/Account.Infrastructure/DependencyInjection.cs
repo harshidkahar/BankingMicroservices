@@ -9,6 +9,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Utility.Messaging;
 using Utility.UnitOfWork;
 
 namespace Account.Infrastructure;
@@ -27,6 +28,10 @@ public static class DependencyInjection
 
         // Account Services
         services.AddScoped<IAccountRepository, AccountRepository>();
+        
+        // Azure Service Bus
+        services.AddSingleton<IEventPublisher, AzureServiceBusPublisher>();
+        services.AddSingleton<IEventSubscriber, AzureServiceBusSubscriber>();
 
         // Logging
         //services.AddLogging(loggingBuilder =>
