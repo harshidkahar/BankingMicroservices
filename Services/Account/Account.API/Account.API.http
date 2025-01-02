@@ -1,9 +1,5 @@
 @Account.API_HostAddress = https://localhost:5002
 
-GET {{Account.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
 
 POST {{Account.API_HostAddress}}/api/accounts/CreateAccount
 Content-Type: application/json

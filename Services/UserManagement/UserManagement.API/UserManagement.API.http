@@ -1,9 +1,5 @@
 @UserManagement.API_HostAddress = https://localhost:5001
 
-GET {{UserManagement.API_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
 
 POST {{UserManagement.API_HostAddress}}/api/auth/login
 Content-Type: application/json

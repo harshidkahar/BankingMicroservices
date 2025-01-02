@@ -10,6 +10,9 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Account.Api.Common.Errors;
 using Account.Application.AccountManagement.Commands.CreateAccount;
+using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,7 +89,62 @@ builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
 builder.Services.AddMediatR(typeof(Program).Assembly);
 //builder.Services.AddMediatR(typeof(LoginCommandHandler).Assembly); // Specify an assembly where handlers are defined
 
+builder.Services.AddRateLimiter(ratelimiterOptions =>
+{
+    ratelimiterOptions.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+    {
+        // Use IP Address as the partition key
+        var clientIp = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+        return RateLimitPartition.GetFixedWindowLimiter(clientIp, _ => new FixedWindowRateLimiterOptions
+        {
+            PermitLimit = 3, // Allow 100 requests
+            Window = TimeSpan.FromSeconds(10), // Per 1 minute
+            QueueProcessingOrder = QueueProcessingOrder.OldestFirst,
+            QueueLimit = 0 // Allow 10 additional requests in the queue
+        });
+    });
+
+    // Customize rate limiting response
+    ratelimiterOptions.OnRejected = async (context, cancellationToken) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        await context.HttpContext.Response.WriteAsync("Rate limit exceeded. Please try again later.", cancellationToken);
+    };
+
+
+    ratelimiterOptions.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+
+    ratelimiterOptions.AddFixedWindowLimiter("fixedwindow", options =>
+    {
+        options.Window = TimeSpan.FromSeconds(10);
+        options.PermitLimit = 3;
+        options.QueueLimit = 0;
+        options.QueueProcessingOrder = QueueProcessingOrder.OldestFirst;
+    });
+
+    ratelimiterOptions.AddSlidingWindowLimiter("slidingWindow", options =>
+    {
+        options.Window = TimeSpan.FromSeconds(15);
+        options.SegmentsPerWindow = 3;
+        options.PermitLimit = 15;
+    });
+
+    ratelimiterOptions.AddTokenBucketLimiter("token", options =>
+    {
+        options.TokenLimit = 100;
+        options.ReplenishmentPeriod = TimeSpan.FromSeconds(5);
+        options.TokensPerPeriod = 10;
+    });
+
+    ratelimiterOptions.AddConcurrencyLimiter("concurrency", options =>
+    {
+        options.PermitLimit = 5;
+    });
+});
+
 var app = builder.Build();
+
+app.UseRateLimiter();
 
 // Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
