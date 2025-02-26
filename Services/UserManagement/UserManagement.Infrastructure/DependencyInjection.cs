@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Utility.UnitOfWork;
+using UserManagement.Application.Common.Interface;
+using UserManagement.Infrastructure.Logging;
 
 namespace UserManagement.Infrastructure;
 
@@ -32,6 +34,8 @@ public static class DependencyInjection
         services.AddSingleton<IJwtTokenGenerator, JwtTokenGenerator>();
 
         // Logging
+        services.AddSingleton<ILoggerService, LoggerManager>();
+
         //services.AddLogging(loggingBuilder =>
         //{
         //    loggingBuilder.AddSerilog();

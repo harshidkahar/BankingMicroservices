@@ -80,7 +80,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 builder.Services.AddAuthorization();
-builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
+// Load Serilog Configuration
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .Enrich.WithMachineName()
+    .Enrich.WithThreadId()
+    .CreateLogger();
+
+
+// Use Serilog as the logging provider
+builder.Host.UseSerilog();
+//builder.Services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog());
 
 // Add MediatR, Dapper, and other services
 builder.Services.AddMediatR(typeof(Program).Assembly);
@@ -101,6 +112,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseRouting();
+app.UseSerilogRequestLogging();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

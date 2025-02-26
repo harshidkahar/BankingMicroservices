@@ -5,6 +5,7 @@ using UserManagement.Application.Authentication.Commands.Login;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using UserManagement.Application.Authentication.Queries;
+using UserManagement.Application.Common.Interface;
 
 namespace UserManagement.API.Controllers
 {
@@ -13,16 +14,19 @@ namespace UserManagement.API.Controllers
     public class AuthController : ApiController
     {
         private readonly IMediator _mediator;
+        private readonly ILoggerService _logger;
 
-        public AuthController(IMediator mediator)
+        public AuthController(IMediator mediator, ILoggerService logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginCommand command)
         {
             var result = await _mediator.Send(command);
+            _logger.LogInformation("User tried to login");
             return result.Match(
                 success => Ok(success),
                 errors => Problem(string.Join(", ", errors.Select(e => e.Description)))
